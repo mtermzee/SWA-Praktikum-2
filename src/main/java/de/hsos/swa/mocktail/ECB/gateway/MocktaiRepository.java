@@ -4,11 +4,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.enterprise.context.ApplicationScoped;
+
 import de.hsos.swa.mocktail.ECB.control.IngredientService;
 import de.hsos.swa.mocktail.ECB.control.MocktialService;
 import de.hsos.swa.mocktail.ECB.entity.Ingredient;
 import de.hsos.swa.mocktail.ECB.entity.Mocktail;
 
+// @Singleton to inject the mocktails in ApiController
+// ApplicationScoped to inject the mocktails in ApiController
+@ApplicationScoped
 public class MocktaiRepository implements MocktialService, IngredientService {
     Map<Integer, Mocktail> mocktails = new HashMap<>();
     Map<Integer, Ingredient> ingredients = new HashMap<>();
