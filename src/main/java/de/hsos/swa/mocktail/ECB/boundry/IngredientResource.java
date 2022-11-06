@@ -8,7 +8,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import de.hsos.swa.mocktail.ECB.control.IngredientService;
-import de.hsos.swa.mocktail.ECB.gateway.MocktaiRepository;
 
 @Path("/ingredients")
 @Produces(MediaType.APPLICATION_JSON)
@@ -17,7 +16,7 @@ import de.hsos.swa.mocktail.ECB.gateway.MocktaiRepository;
 public class IngredientResource {
     // Inject - for dependency injection Initialize the MocktailRepository
     @Inject
-    IngredientService ingredientService = new MocktaiRepository();
+    IngredientService ingredientService;
 
     @PostConstruct
     public void init() {
