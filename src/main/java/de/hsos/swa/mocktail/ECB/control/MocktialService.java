@@ -5,7 +5,7 @@ import java.util.List;
 import de.hsos.swa.mocktail.ECB.entity.Mocktail;
 
 public interface MocktialService {
-    boolean addMocktail(String name);
+    int addMocktail(String name);
 
     boolean deleteMocktail(int id);
 

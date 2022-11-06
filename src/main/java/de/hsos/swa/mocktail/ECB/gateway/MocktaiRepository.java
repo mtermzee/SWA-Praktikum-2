@@ -19,10 +19,15 @@ public class MocktaiRepository implements MocktialService, IngredientService {
     Map<Integer, Ingredient> ingredients = new HashMap<>();
 
     @Override
-    public boolean createIngredient(String name) {
+    public int createIngredient(String name) {
+        for (Ingredient ingredient : ingredients.values()) {
+            if (ingredient.getName().equals(name)) {
+                return ingredient.getId();
+            }
+        }
         Ingredient ingredient = new Ingredient(ingredients.size(), name);
         ingredients.put(ingredient.getId(), ingredient);
-        return true;
+        return ingredient.getId();
     }
 
     @Override
@@ -31,6 +36,21 @@ public class MocktaiRepository implements MocktialService, IngredientService {
         Ingredient ingredient = getIngredientById(ingredientID);
         if (mocktail != null && ingredient != null) {
             mocktail.addIngredient(ingredient);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean addIngredientToMocktail(List<Integer> ingredientIDs, int mocktailID) {
+        Mocktail mocktail = getMocktailById(mocktailID);
+        if (mocktail != null) {
+            for (Integer ingredientID : ingredientIDs) {
+                Ingredient ingredient = getIngredientById(ingredientID);
+                if (ingredient != null) {
+                    mocktail.addIngredient(ingredient);
+                }
+            }
             return true;
         }
         return false;
@@ -80,15 +100,15 @@ public class MocktaiRepository implements MocktialService, IngredientService {
     }
 
     @Override
-    public boolean addMocktail(String name) {
+    public int addMocktail(String name) {
         for (Mocktail mocktail : mocktails.values()) {
             if (mocktail.getName().equals(name)) {
-                return false;
+                return mocktail.getId();
             }
         }
         Mocktail mocktail = new Mocktail(mocktails.size(), name);
         mocktails.put(mocktail.getId(), mocktail);
-        return true;
+        return mocktail.getId();
     }
 
     @Override

@@ -5,9 +5,11 @@ import java.util.List;
 import de.hsos.swa.mocktail.ECB.entity.Ingredient;
 
 public interface IngredientService {
-    boolean createIngredient(String name);
+    int createIngredient(String name);
 
     boolean addIngredientToMocktail(int ingredientID, int mocktailID);
+
+    boolean addIngredientToMocktail(List<Integer> ingredientIDs, int mocktailID);
 
     boolean deleteIngredient(int id);
 
