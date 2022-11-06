@@ -6,15 +6,22 @@ import java.util.Map;
 
 import javax.enterprise.context.ApplicationScoped;
 
-import de.hsos.swa.mocktail.ECB.control.IngredientService;
-import de.hsos.swa.mocktail.ECB.control.MocktialService;
+import de.hsos.swa.mocktail.ECB.control.ingredient.IngredientDelete;
+import de.hsos.swa.mocktail.ECB.control.ingredient.IngredientGet;
+import de.hsos.swa.mocktail.ECB.control.ingredient.IngredientPost;
+import de.hsos.swa.mocktail.ECB.control.ingredient.IngredientPut;
+import de.hsos.swa.mocktail.ECB.control.mocktail.MocktailDelete;
+import de.hsos.swa.mocktail.ECB.control.mocktail.MocktailGet;
+import de.hsos.swa.mocktail.ECB.control.mocktail.MocktailPost;
+import de.hsos.swa.mocktail.ECB.control.mocktail.MocktailPut;
 import de.hsos.swa.mocktail.ECB.entity.Ingredient;
 import de.hsos.swa.mocktail.ECB.entity.Mocktail;
 
 // @Singleton to inject the mocktails in ApiController
 // ApplicationScoped to inject the mocktails in ApiController
 @ApplicationScoped
-public class MocktaiRepository implements MocktialService, IngredientService {
+public class MocktaiRepository implements IngredientGet, IngredientPost, IngredientPut, IngredientDelete, MocktailGet,
+        MocktailPost, MocktailPut, MocktailDelete {
     Map<Integer, Mocktail> mocktails = new HashMap<>();
     Map<Integer, Ingredient> ingredients = new HashMap<>();
 

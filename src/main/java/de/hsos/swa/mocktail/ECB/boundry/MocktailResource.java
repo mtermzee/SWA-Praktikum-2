@@ -18,8 +18,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import de.hsos.swa.mocktail.ECB.control.IngredientService;
-import de.hsos.swa.mocktail.ECB.control.MocktialService;
+import de.hsos.swa.mocktail.ECB.control.ingredient.IngredientPost;
+import de.hsos.swa.mocktail.ECB.control.mocktail.MocktailDelete;
+import de.hsos.swa.mocktail.ECB.control.mocktail.MocktailGet;
+import de.hsos.swa.mocktail.ECB.control.mocktail.MocktailPost;
+import de.hsos.swa.mocktail.ECB.control.mocktail.MocktailPut;
 import de.hsos.swa.mocktail.ECB.entity.Mocktail;
 
 @Path("/mocktails")
@@ -29,31 +32,40 @@ import de.hsos.swa.mocktail.ECB.entity.Mocktail;
 public class MocktailResource {
     // Inject - for dependency injection Initialize the MocktailRepository
     @Inject
-    MocktialService mocktialService;
+    MocktailGet Get;
 
     @Inject
-    IngredientService ingredientService;
+    MocktailPost Post;
+
+    @Inject
+    MocktailPut Put;
+
+    @Inject
+    MocktailDelete Delete;
+
+    @Inject
+    IngredientPost inPost;
 
     @PostConstruct
     public void init() {
         // add data
-        int m1 = mocktialService.addMocktail("Sex on the Beach");
+        int m1 = Post.addMocktail("Sex on the Beach");
 
         List<Integer> ingredientIDs = new ArrayList<>();
         // sex on the beach rezept
-        ingredientIDs.add(ingredientService.createIngredient("Wodka"));
-        ingredientIDs.add(ingredientService.createIngredient("Pfirsichlikör"));
-        ingredientIDs.add(ingredientService.createIngredient("Cranberry Direktsaft"));
-        ingredientIDs.add(ingredientService.createIngredient("Orangensaft"));
-        ingredientIDs.add(ingredientService.createIngredient("Eiswürfel"));
+        ingredientIDs.add(inPost.createIngredient("Wodka"));
+        ingredientIDs.add(inPost.createIngredient("Pfirsichlikör"));
+        ingredientIDs.add(inPost.createIngredient("Cranberry Direktsaft"));
+        ingredientIDs.add(inPost.createIngredient("Orangensaft"));
+        ingredientIDs.add(inPost.createIngredient("Eiswürfel"));
 
         // add rezept to Mocktail
-        ingredientService.addIngredientToMocktail(ingredientIDs, m1);
+        inPost.addIngredientToMocktail(ingredientIDs, m1);
     }
 
     @GET
     public Response getMocktails() {
-        List<Mocktail> mocktails = this.mocktialService.getMocktails();
+        List<Mocktail> mocktails = this.Get.getMocktails();
         if (!mocktails.isEmpty())
             return Response.ok(mocktails).build();
 
@@ -63,7 +75,7 @@ public class MocktailResource {
     @GET
     @Path("{id}")
     public Response getMocktailById(@PathParam("id") int id) {
-        Mocktail mocktail = this.mocktialService.getMocktailById(id);
+        Mocktail mocktail = this.Get.getMocktailById(id);
         if (mocktail != null)
             return Response.ok(mocktail).build();
 
@@ -74,7 +86,7 @@ public class MocktailResource {
     @Path("{mocktail}")
     public Response addMocktail(@PathParam("mocktail") String mocktail) {
         if (mocktail != null) {
-            int id = this.mocktialService.addMocktail(mocktail);
+            int id = this.Post.addMocktail(mocktail);
             if (id != -1)
                 return Response.ok(id).entity("Mocktail has been added successfully").type("text/plain").build();
         }
@@ -86,7 +98,7 @@ public class MocktailResource {
     @Path("{id}")
     public Response updateMocktail(@PathParam("id") int id, @QueryParam("mocktail") String mocktail) {
         if (mocktail != null) {
-            boolean updated = this.mocktialService.updateMocktail(id, mocktail);
+            boolean updated = this.Put.updateMocktail(id, mocktail);
             if (updated)
                 return Response.ok().entity("Mocktail has been updated successfully").type("text/plain").build();
         }
@@ -97,7 +109,7 @@ public class MocktailResource {
     @DELETE
     @Path("{id}")
     public Response deleteMocktail(@PathParam("id") int id) {
-        boolean deleted = this.mocktialService.deleteMocktail(id);
+        boolean deleted = this.Delete.deleteMocktail(id);
         if (deleted)
             return Response.ok().entity("Mocktail has been deleted successfully").type("text/plain").build();
 
