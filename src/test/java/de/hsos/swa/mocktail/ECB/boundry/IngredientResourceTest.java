@@ -2,14 +2,11 @@ package de.hsos.swa.mocktail.ECB.boundry;
 
 import org.junit.jupiter.api.Test;
 import io.quarkus.test.junit.QuarkusTest;
-import io.quarkus.test.common.http.TestHTTPEndpoint;
 
-import static org.hamcrest.CoreMatchers.is;
-import org.junit.jupiter.api.BeforeEach;
+import static org.hamcrest.CoreMatchers.*;
 import static io.restassured.RestAssured.given;
 
 @QuarkusTest
-@TestHTTPEndpoint(IngredientResource.class)
 public class IngredientResourceTest {
     @Test
     void testAddIngredientToMocktail() {

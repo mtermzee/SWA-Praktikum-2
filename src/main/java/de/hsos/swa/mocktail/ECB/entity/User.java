@@ -1,23 +1,25 @@
 package de.hsos.swa.mocktail.ECB.entity;
 
-public class Ingredient {
+public class User {
     int id;
     String name;
-    String author;
+    // String[] role;
 
-    public Ingredient() {
+    public User() {
     }
 
-    public Ingredient(int id, String name) {
+    public User(int id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public Ingredient(int id, String name, String author) {
-        this.id = id;
-        this.name = name;
-        this.author = author;
-    }
+    /*
+     * public User(int id, String name, String[] role) {
+     * this.id = id;
+     * this.name = name;
+     * this.role = role;
+     * }
+     */
 
     public int getId() {
         return id;
@@ -35,13 +37,15 @@ public class Ingredient {
         this.name = name;
     }
 
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
+    /*
+     * public String[] getRole() {
+     * return role;
+     * }
+     * 
+     * public void setRole(String role) {
+     * this.role[0] = role;
+     * }
+     */
 
     @Override
     public int hashCode() {
@@ -49,7 +53,6 @@ public class Ingredient {
         int result = 1;
         result = prime * result + id;
         result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + ((author == null) ? 0 : author.hashCode());
         return result;
     }
 
@@ -61,7 +64,7 @@ public class Ingredient {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Ingredient other = (Ingredient) obj;
+        User other = (User) obj;
         if (id != other.id)
             return false;
         if (name == null) {
@@ -69,17 +72,12 @@ public class Ingredient {
                 return false;
         } else if (!name.equals(other.name))
             return false;
-        if (author == null) {
-            if (other.author != null)
-                return false;
-        } else if (!author.equals(other.author))
-            return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "Ingredient [id=" + id + ", name=" + name + ", author=" + author + "]";
+        return "User [id=" + id + ", name=" + name + "]";
     }
 
 }

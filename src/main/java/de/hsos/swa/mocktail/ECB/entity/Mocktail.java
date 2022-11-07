@@ -7,6 +7,7 @@ public class Mocktail {
     int id;
     String name;
     List<Ingredient> ingredients = new ArrayList<>();
+    String author;
 
     public Mocktail() {
     }
@@ -14,6 +15,12 @@ public class Mocktail {
     public Mocktail(int id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public Mocktail(int id, String name, String author) {
+        this.id = id;
+        this.name = name;
+        this.author = author;
     }
 
     public Mocktail(int id, String name, List<Ingredient> ingredients) {
@@ -46,6 +53,14 @@ public class Mocktail {
         ingredients.add(ingredient);
     }
 
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
     public boolean removeIngredient(int id) {
         for (Ingredient ingredient : ingredients) {
             if (ingredient.getId() == id) {
@@ -63,6 +78,7 @@ public class Mocktail {
         result = prime * result + id;
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         result = prime * result + ((ingredients == null) ? 0 : ingredients.hashCode());
+        result = prime * result + ((author == null) ? 0 : author.hashCode());
         return result;
     }
 
@@ -87,12 +103,17 @@ public class Mocktail {
                 return false;
         } else if (!ingredients.equals(other.ingredients))
             return false;
+        if (author == null) {
+            if (other.author != null)
+                return false;
+        } else if (!author.equals(other.author))
+            return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "Mocktail [id=" + id + ", name=" + name + ", ingredients=" + ingredients + "]";
+        return "Mocktail [id=" + id + ", name=" + name + ", ingredients=" + ingredients + ", author=" + author + "]";
     }
 
 }

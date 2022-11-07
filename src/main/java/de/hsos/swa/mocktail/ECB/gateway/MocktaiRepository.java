@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
 import de.hsos.swa.mocktail.ECB.control.ingredient.IngredientDelete;
 import de.hsos.swa.mocktail.ECB.control.ingredient.IngredientGet;
@@ -24,6 +25,9 @@ public class MocktaiRepository implements IngredientGet, IngredientPost, Ingredi
         MocktailPost, MocktailPut, MocktailDelete {
     Map<Integer, Mocktail> mocktails = new HashMap<>();
     Map<Integer, Ingredient> ingredients = new HashMap<>();
+
+    @Inject
+    UserChecker userChecker;
 
     @Override
     public int createIngredient(String name) {
@@ -113,7 +117,8 @@ public class MocktaiRepository implements IngredientGet, IngredientPost, Ingredi
                 return mocktail.getId();
             }
         }
-        Mocktail mocktail = new Mocktail(mocktails.size(), name);
+        Mocktail mocktail = new Mocktail(mocktails.size(), name, userChecker.getCurrentUser());
+        // System.out.println("TEST: " + userChecker.getCurrentUser());
         mocktails.put(mocktail.getId(), mocktail);
         return mocktail.getId();
     }
