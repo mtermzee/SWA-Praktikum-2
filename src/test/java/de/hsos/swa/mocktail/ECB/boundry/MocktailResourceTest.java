@@ -1,5 +1,6 @@
 package de.hsos.swa.mocktail.ECB.boundry;
 
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
 import io.quarkus.test.junit.QuarkusTest;
@@ -10,16 +11,19 @@ import static io.restassured.RestAssured.given;
 @QuarkusTest
 public class MocktailResourceTest {
     @Test
+    @Order(1)
     void testAddMocktail() {
 
     }
 
     @Test
-    void testDeleteMocktail() {
-
+    @Order(2)
+    void testGetMocktails() {
+        given().when().get("/mocktails").then().statusCode(200);
     }
 
     @Test
+    @Order(3)
     void testGetMocktailById() {
         given()
                 .when().get("/mocktails/{id}", 0)
@@ -29,11 +33,21 @@ public class MocktailResourceTest {
     }
 
     @Test
-    void testGetMocktails() {
-        given().when().get("/mocktails").then().statusCode(200);
+    @Order(4)
+    void testUpdateMocktail() {
+
     }
 
-    @Test
-    void testUpdateMocktail() {
-    }
+    /*
+     * @Test
+     * 
+     * @Order(5)
+     * void testDeleteMocktail() {
+     * given()
+     * .when().delete("/mocktails/0")
+     * .then()
+     * .statusCode(200);
+     * }
+     */
+
 }
