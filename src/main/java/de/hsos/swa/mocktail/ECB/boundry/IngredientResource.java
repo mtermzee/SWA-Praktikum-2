@@ -17,10 +17,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import de.hsos.swa.mocktail.ECB.control.ingredient.IngredientDelete;
-import de.hsos.swa.mocktail.ECB.control.ingredient.IngredientGet;
-import de.hsos.swa.mocktail.ECB.control.ingredient.IngredientPost;
-import de.hsos.swa.mocktail.ECB.control.ingredient.IngredientPut;
+import de.hsos.swa.mocktail.ECB.control.ingredient.IngredientService;
 import de.hsos.swa.mocktail.ECB.entity.Ingredient;
 
 @Path("/ingredients")
@@ -30,31 +27,22 @@ import de.hsos.swa.mocktail.ECB.entity.Ingredient;
 public class IngredientResource {
     // Inject - for dependency injection Initialize the MocktailRepository
     @Inject
-    IngredientGet Get;
-
-    @Inject
-    IngredientPost Post;
-
-    @Inject
-    IngredientPut Put;
-
-    @Inject
-    IngredientDelete Delete;
+    IngredientService ingredientService;
 
     @PostConstruct
     public void init() {
         // add data
         // Wassermelonen-Mocktail
-        Post.createIngredient("Melonenfleisch");
-        Post.createIngredient("Orangensaft");
-        Post.createIngredient("Limettesaft");
-        Post.createIngredient("Erdbeersaft");
-        Post.createIngredient("Eiswürfel");
+        ingredientService.createIngredient("Melonenfleisch");
+        ingredientService.createIngredient("Orangensaft");
+        ingredientService.createIngredient("Limettesaft");
+        ingredientService.createIngredient("Erdbeersaft");
+        ingredientService.createIngredient("Eiswürfel");
     }
 
     @GET
     public Response getIngredients() {
-        List<Ingredient> ingredients = this.Get.getIngredients();
+        List<Ingredient> ingredients = this.ingredientService.getIngredients();
         if (!ingredients.isEmpty())
             return Response.ok(ingredients).build();
 
@@ -64,7 +52,7 @@ public class IngredientResource {
     @GET
     @Path("{id}")
     public Response getIngredientById(@PathParam("id") int id) {
-        Ingredient ingredient = this.Get.getIngredientById(id);
+        Ingredient ingredient = this.ingredientService.getIngredientById(id);
         if (ingredient != null)
             return Response.ok(ingredient).build();
 
@@ -74,7 +62,7 @@ public class IngredientResource {
     @POST
     @Path("{ingredient}")
     public Response createIngredient(@PathParam("ingredient") String ingredient) {
-        int id = this.Post.createIngredient(ingredient);
+        int id = this.ingredientService.createIngredient(ingredient);
         if (id != 0)
             return Response.ok(id).entity("Ingredient has been added successfully").type("text/plain").build();
 
@@ -86,7 +74,7 @@ public class IngredientResource {
     @Path("{ingredient}/{id}")
     public Response addIngredientToMocktail(@PathParam("id") int ingredientID,
             @QueryParam("mocktailID") int mocktailID) {
-        boolean result = this.Post.addIngredientToMocktail(ingredientID, mocktailID);
+        boolean result = this.ingredientService.addIngredientToMocktail(ingredientID, mocktailID);
         if (result)
             return Response.ok(result).entity("Ingredient has been added to Mocktail successfully").type("text/plain")
                     .build();
@@ -100,7 +88,7 @@ public class IngredientResource {
     @Path("{id}")
     public Response updateIngredient(@PathParam("id") int id, @QueryParam("name") String name) {
         if (name != null) {
-            boolean result = this.Put.updateIngredient(id, name);
+            boolean result = this.ingredientService.updateIngredient(id, name);
             if (result)
                 return Response.ok(result).entity("Ingredient has been updated successfully").type("text/plain")
                         .build();
@@ -112,7 +100,7 @@ public class IngredientResource {
     @DELETE
     @Path("{id}")
     public Response deleteIngredient(@PathParam("id") int id) {
-        boolean result = this.Delete.deleteIngredient(id);
+        boolean result = this.ingredientService.deleteIngredient(id);
         if (result)
             return Response.ok(result).entity("Ingredient has been deleted successfully").type("text/plain").build();
 

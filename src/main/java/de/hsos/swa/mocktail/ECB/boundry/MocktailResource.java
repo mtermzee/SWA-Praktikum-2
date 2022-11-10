@@ -1,6 +1,5 @@
 package de.hsos.swa.mocktail.ECB.boundry;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -18,11 +17,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import de.hsos.swa.mocktail.ECB.control.ingredient.IngredientPost;
-import de.hsos.swa.mocktail.ECB.control.mocktail.MocktailDelete;
-import de.hsos.swa.mocktail.ECB.control.mocktail.MocktailGet;
-import de.hsos.swa.mocktail.ECB.control.mocktail.MocktailPost;
-import de.hsos.swa.mocktail.ECB.control.mocktail.MocktailPut;
+import de.hsos.swa.mocktail.ECB.control.ingredient.IngredientService;
+import de.hsos.swa.mocktail.ECB.control.mocktail.MocktailService;
 import de.hsos.swa.mocktail.ECB.entity.Mocktail;
 
 @Path("/mocktails")
@@ -32,40 +28,28 @@ import de.hsos.swa.mocktail.ECB.entity.Mocktail;
 public class MocktailResource {
     // Inject - for dependency injection Initialize the MocktailRepository
     @Inject
-    MocktailGet Get;
+    MocktailService mocktailService;
 
     @Inject
-    MocktailPost Post;
-
-    @Inject
-    MocktailPut Put;
-
-    @Inject
-    MocktailDelete Delete;
-
-    @Inject
-    IngredientPost inPost;
+    IngredientService ingredientService;
 
     @PostConstruct
     public void init() {
         // add data
-        int m1 = Post.addMocktail("Sex on the Beach");
+        int m1 = mocktailService.addMocktail("Sex on the Beach");
 
-        List<Integer> ingredientIDs = new ArrayList<>();
         // sex on the beach rezept
-        ingredientIDs.add(inPost.createIngredient("Wodka"));
-        ingredientIDs.add(inPost.createIngredient("Pfirsichlikör"));
-        ingredientIDs.add(inPost.createIngredient("Cranberry Direktsaft"));
-        ingredientIDs.add(inPost.createIngredient("Orangensaft"));
-        ingredientIDs.add(inPost.createIngredient("Eiswürfel"));
-
         // add rezept to Mocktail
-        inPost.addIngredientToMocktail(ingredientIDs, m1);
+        ingredientService.addIngredientToMocktail(ingredientService.createIngredient("Wodka"), m1);
+        ingredientService.addIngredientToMocktail(ingredientService.createIngredient("Pfirsichlikör"), m1);
+        ingredientService.addIngredientToMocktail(ingredientService.createIngredient("Cranberry Direktsaft"), m1);
+        ingredientService.addIngredientToMocktail(ingredientService.createIngredient("Orangensaft"), m1);
+        ingredientService.addIngredientToMocktail(ingredientService.createIngredient("Eiswürfel"), m1);
     }
 
     @GET
     public Response getMocktails() {
-        List<Mocktail> mocktails = this.Get.getMocktails();
+        List<Mocktail> mocktails = this.mocktailService.getMocktails();
         if (!mocktails.isEmpty())
             return Response.ok(mocktails).build();
 
@@ -75,7 +59,7 @@ public class MocktailResource {
     @GET
     @Path("{id}")
     public Response getMocktailById(@PathParam("id") int id) {
-        Mocktail mocktail = this.Get.getMocktailById(id);
+        Mocktail mocktail = this.mocktailService.getMocktailById(id);
         if (mocktail != null)
             return Response.ok(mocktail).build();
 
@@ -86,7 +70,7 @@ public class MocktailResource {
     @Path("{mocktail}")
     public Response addMocktail(@PathParam("mocktail") String mocktail) {
         if (mocktail != null) {
-            int id = this.Post.addMocktail(mocktail);
+            int id = this.mocktailService.addMocktail(mocktail);
             if (id != -1)
                 return Response.ok(id).entity("Mocktail has been added successfully").type("text/plain").build();
         }
@@ -98,7 +82,7 @@ public class MocktailResource {
     @Path("{id}")
     public Response updateMocktail(@PathParam("id") int id, @QueryParam("mocktail") String mocktail) {
         if (mocktail != null) {
-            boolean updated = this.Put.updateMocktail(id, mocktail);
+            boolean updated = this.mocktailService.updateMocktail(id, mocktail);
             if (updated)
                 return Response.ok().entity("Mocktail has been updated successfully").type("text/plain").build();
         }
@@ -109,7 +93,7 @@ public class MocktailResource {
     @DELETE
     @Path("{id}")
     public Response deleteMocktail(@PathParam("id") int id) {
-        boolean deleted = this.Delete.deleteMocktail(id);
+        boolean deleted = this.mocktailService.deleteMocktail(id);
         if (deleted)
             return Response.ok().entity("Mocktail has been deleted successfully").type("text/plain").build();
 
